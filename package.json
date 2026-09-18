@@ -1,0 +1,8 @@
+{
+  "name": "poke-dex-search",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node tests/search.test.mjs"
+  }
+}

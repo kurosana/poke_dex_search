@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pokedex Search</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="desktop" id="desktop">
+      <div class="tk-window main" id="main-window">
+        <div class="titlebar" id="main-titlebar">
+          <div class="titlebar-title">Pokedex Search</div>
+          <div class="titlebar-buttons">
+            <button type="button" class="titlebar-btn close" id="main-close" aria-label="閉じる">×</button>
+          </div>
+        </div>
+        <div class="tk-client">
+          <div class="tk-label">ポケモン名or検索したい単語:</div>
+          <input
+            id="search-entry"
+            class="tk-entry"
+            type="text"
+            spellcheck="false"
+            autocomplete="off"
+            autocapitalize="off"
+          />
+          <button id="search-button" class="tk-button" type="button">単語検索</button>
+          <div class="tree-wrap">
+            <div class="tree">
+              <div class="tree-heading single">
+                <span>ポケモン名(ダブルクリックで詳細)</span>
+              </div>
+              <div class="tree-body" id="main-tree-body"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="context-menu" id="context-menu">
+      <div class="context-menu-item">コピー(Ctrl+C)</div>
+    </div>
+
+    <script type="module" src="js/app.js"></script>
+  </body>
+</html>
