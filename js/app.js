@@ -11,6 +11,7 @@ const CSV_URL = new URL("../pokedex_descriptions.csv", import.meta.url);
 const state = {
   rows: [],
   ready: false,
+  pendingSearch: false,
   searchWord: "",
   mainSelected: null,
   zIndex: 10,
@@ -136,7 +137,11 @@ function renderNameList(names) {
 }
 
 function runSearch() {
-  if (!state.ready) return;
+  if (!state.ready) {
+    state.pendingSearch = true;
+    return;
+  }
+  state.pendingSearch = false;
   const searchWord = els.entry.value;
   const result = searchUniquePokemon(state.rows, searchWord);
   if (!result.ok) return;
@@ -151,10 +156,13 @@ function openDetails(pokemonName) {
   win.id = detailsId;
   win.tabIndex = -1;
 
-  const offset = 48 + (state.cascade % 6) * 28;
+  const offset = (state.cascade % 6) * 28;
   state.cascade += 1;
-  win.style.left = `${offset + 80}px`;
-  win.style.top = `${offset}px`;
+  const mainLeft = Number.parseFloat(els.mainWindow.style.left) || 24;
+  const mainTop = Number.parseFloat(els.mainWindow.style.top) || 24;
+  const mainWidth = els.mainWindow.offsetWidth || 420;
+  win.style.left = `${mainLeft + mainWidth + 16 + offset}px`;
+  win.style.top = `${Math.max(8, mainTop + offset)}px`;
 
   win.innerHTML = `
     <div class="titlebar">
@@ -259,6 +267,8 @@ async function loadData() {
   const text = await response.text();
   state.rows = parseCSV(text);
   state.ready = true;
+  document.body.dataset.ready = "true";
+  if (state.pendingSearch) runSearch();
 }
 
 function setup() {
@@ -271,6 +281,7 @@ function setup() {
 
   enableDrag(els.mainWindow, $("main-titlebar"));
   bringToFront(els.mainWindow);
+  els.mainWindow.addEventListener("mousedown", () => bringToFront(els.mainWindow));
 
   els.button.addEventListener("click", runSearch);
   els.entry.addEventListener("keydown", (event) => {

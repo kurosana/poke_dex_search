@@ -9,7 +9,7 @@
   --tk-select-bg: #0078d7;
   --tk-select-fg: #ffffff;
   --tk-highlight: #cefff8;
-  --tk-font: "Yu Gothic UI", "Meiryo UI", "Yu Gothic", Meiryo, "Segoe UI", "Noto Sans JP", sans-serif;
+  --tk-font: "Yu Gothic UI", "Meiryo UI", "Yu Gothic", Meiryo, "Segoe UI", "Noto Sans JP", "WenQuanYi Micro Hei", "Droid Sans Fallback", sans-serif;
   --titlebar-h: 32px;
 }
 
@@ -29,6 +29,7 @@ body {
   color: var(--tk-text);
   background: #7a7a7a;
   cursor: default;
+  overflow: auto;
 }
 
 .desktop {
