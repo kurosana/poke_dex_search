@@ -2,45 +2,104 @@
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pokedex Search</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>図鑑さがし</title>
+    <meta name="description" content="ポケモン名でも図鑑の一文でも。打ち終わったら Enter で探す図鑑検索。" />
+    <meta name="theme-color" content="#ef4444" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <div class="desktop" id="desktop">
-      <div class="tk-window main" id="main-window">
-        <div class="titlebar" id="main-titlebar">
-          <div class="titlebar-title">Pokedex Search</div>
-          <div class="titlebar-buttons">
-            <button type="button" class="titlebar-btn close" id="main-close" aria-label="閉じる">×</button>
+    <div class="atmosphere" aria-hidden="true"></div>
+    <div class="dex-seal" aria-hidden="true">
+      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="100" cy="100" r="92" fill="#ef4444" />
+        <path d="M8 100h184" stroke="#1f2937" stroke-width="18" />
+        <path d="M8 100a92 92 0 0 0 184 0" fill="#f8fafc" />
+        <circle cx="100" cy="100" r="32" fill="#f8fafc" stroke="#1f2937" stroke-width="14" />
+        <circle cx="100" cy="100" r="16" fill="#e2e8f0" stroke="#1f2937" stroke-width="4" />
+      </svg>
+    </div>
+
+    <div class="page">
+      <header class="hero">
+        <p class="brand">
+          <span class="brand-dot" aria-hidden="true"></span>
+          図鑑さがし
+        </p>
+        <h1>ことばで、<br />ポケモンをさがす。</h1>
+        <p class="lead">
+          名前でも、図鑑の一文でもだいじょうぶ。<br />
+          打ち終わったら <kbd>Enter</kbd>。入力中には動かない、昔ながらの単語検索です。
+        </p>
+      </header>
+
+      <main>
+        <section class="search-card" aria-label="検索">
+          <label class="search-label" for="search-entry">ポケモン名 or さがしたい単語</label>
+          <form id="search-form" class="search-bar" autocomplete="off">
+            <input
+              id="search-entry"
+              class="search-input"
+              type="text"
+              spellcheck="false"
+              autocomplete="off"
+              autocapitalize="off"
+              placeholder="たね、でんき、ピカチュウ…"
+            />
+            <button id="search-button" class="search-button" type="submit">単語検索</button>
+          </form>
+          <div class="chips" id="sample-chips">
+            <button type="button" class="chip" data-query="たね">たね</button>
+            <button type="button" class="chip" data-query="でんき">でんき</button>
+            <button type="button" class="chip" data-query="電気">電気</button>
+            <button type="button" class="chip" data-query="ピカチュウ">ピカチュウ</button>
+            <button type="button" class="chip" data-query="フシギ">フシギ</button>
           </div>
-        </div>
-        <div class="tk-client">
-          <div class="tk-label">ポケモン名or検索したい単語:</div>
-          <input
-            id="search-entry"
-            class="tk-entry"
-            type="text"
-            spellcheck="false"
-            autocomplete="off"
-            autocapitalize="off"
-          />
-          <button id="search-button" class="tk-button" type="button">単語検索</button>
-          <div class="tree-wrap">
-            <div class="tree">
-              <div class="tree-heading single">
-                <span>ポケモン名(ダブルクリックで詳細)</span>
-              </div>
-              <div class="tree-body" id="main-tree-body"></div>
+          <p class="status" id="status">ことばを入れて、Enter か「単語検索」</p>
+        </section>
+
+        <div class="workspace">
+          <section class="panel results-panel" aria-label="検索結果">
+            <div class="panel-head">
+              <h2>ポケモン</h2>
+              <p class="panel-note">クリックで詳細</p>
             </div>
-          </div>
+            <div class="tree-body" id="main-tree-body">
+              <div class="empty-state" id="idle-empty">
+                <div class="empty-orb" aria-hidden="true"></div>
+                <p class="empty-title">まだ、だれも出てきていないよ</p>
+                <p class="empty-text">
+                  カタカナの名前か、図鑑に出てくるひらがな・漢字で探してね。<br />
+                  ゲームのタイトル（ファイアレッドなど）ではヒットしないよ。
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel details-panel" id="details-dock" hidden>
+            <div class="panel-head details-head">
+              <div class="detail-tabs" id="detail-tabs"></div>
+            </div>
+            <div class="details-body" id="details-body"></div>
+          </section>
         </div>
-      </div>
+      </main>
+
+      <footer class="footer">
+        <p>不具合・ご意見は クロサナ(X:<a href="https://x.com/kurosana309637" target="_blank" rel="noopener noreferrer">@kurosana309637</a>) まで</p>
+      </footer>
     </div>
 
     <div class="context-menu" id="context-menu">
       <div class="context-menu-item">コピー(Ctrl+C)</div>
     </div>
+    <div class="toast" id="toast" hidden>コピーしたよ</div>
 
     <script type="module" src="js/app.js"></script>
   </body>
